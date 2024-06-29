@@ -3,6 +3,7 @@
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 """ Import libraries Original """
 from AlphaZeroCode.network import AlphaZeroNetwork, Resnet
