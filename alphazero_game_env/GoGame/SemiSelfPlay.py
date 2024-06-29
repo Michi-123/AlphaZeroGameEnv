@@ -52,3 +52,8 @@ class SemiSelfPlay(SelfPlay):
 
         """ 符号を反転させて返却 """
         return v
+
+def show_board(state):
+    print()
+    for row in state:
+        print(row)
