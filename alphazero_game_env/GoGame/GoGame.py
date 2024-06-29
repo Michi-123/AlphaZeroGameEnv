@@ -306,8 +306,8 @@ class GoGame(GoGame):
             print('black', black_territory, '  white', white_territory)
             print(self.captured_stones_dict)
 
-        black_captured_stones = self.captured_stones_dict[CFG.black]
-        white_captured_stones = self.captured_stones_dict[CFG.white]
+        black_captured_stones = self.captured_stones_dict[self.CFG.black]
+        white_captured_stones = self.captured_stones_dict[self.CFG.white]
 
         black = black_territory + black_captured_stones
         white = white_territory + white_captured_stones
