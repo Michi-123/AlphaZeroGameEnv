@@ -18,12 +18,9 @@ class SemiSelfPlay(SelfPlay):
         if human==1:
             env = copy.deepcopy(self.env)
             next_node = self.go_agent.human(node, env) #fix
-            # action = self.go_agent.human(node.states[0])
-            # next_node = self.mcts.human_play(node, action) #fix
         else:
             """ AlphaZero player """
             next_node = self.go_agent.alpha_zero(node, play_count) #fix
-            # action = next_node.action
 
         action = next_node.action #fix
 
@@ -43,10 +40,11 @@ class SemiSelfPlay(SelfPlay):
             v = -self.play(next_node, play_count + 1, -human)
 
         """ 履歴データを追加 """
-        print('Backup-----------')
-        show_board(node.states[0]) # このhuman node のn が間違っている.
-        # 訪問回数n でpi を求めている
-        print('a',node.action, 'n',node.n, 'p', node.p, 'Q', node.Q, 'v', v )
+        if 0: # debug
+            print('Backup-----------')
+            show_board(node.states[0]) # このhuman node のn が間違っている.
+            # 訪問回数n でpi を求めている
+            print('a',node.action, 'n',node.n, 'p', node.p, 'Q', node.Q, 'v', v )
 
         self.backup(node, action, v) #
 
