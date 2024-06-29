@@ -20,7 +20,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown', 
     keywords='gogame tic-tac-toe othello gomoku', 
-    url='https://github.com/Michi-123/GameEnv',
+    url='https://github.com/Michi-123/AlphaZeroGameEnv',
 
     classifiers=[
         'License :: OSI Approved :: MIT License',
