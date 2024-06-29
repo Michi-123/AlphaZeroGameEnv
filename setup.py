@@ -10,9 +10,9 @@ with open(os.path.join(current_path, 'README.md'), encoding='utf-8') as f:
 
 
 setup(
-    name='alphazero_game_env', 
+    name='alphazero_game_env',
     packages=find_packages(exclude=('*.pyc',)),
-    version='1.0.2.0',
+    version='1.0.1.0',
     license='MIT', 
     install_requires=[],
     author='M.Uchiyama',
