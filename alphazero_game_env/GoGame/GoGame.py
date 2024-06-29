@@ -63,8 +63,9 @@ class GoGame(GoGame):
             if self.pass_count >= 2:
                 self.done = True # 終了
                 self.reword = self.count_reword()
+            else:
+                self.change_turn()
 
-            self.change_turn()
             return self.state, self.reward, self.done
 
         x, y = (a // self.width), (a % self.width)

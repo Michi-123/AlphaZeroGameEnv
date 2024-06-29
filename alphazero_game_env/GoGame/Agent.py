@@ -27,7 +27,7 @@ class Agent(Agent):
 
         if x1 == -1:
             # action = self.CFG.action_size
-            action = self.env.width * self.env.width
+            action = self.CFG.pass_action
         else:
             # 縦横入れ替え
             action = x2 * self.env.width + x1
