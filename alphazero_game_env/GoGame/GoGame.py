@@ -1,4 +1,6 @@
 """# GoGame"""
+# @title GoGame
+
 import numpy as np
 import copy
 
@@ -57,13 +59,15 @@ class GoGame(GoGame):
         self.reward = 0
 
         if is_pass or a == self.pass_action:
-            self.reward = -1
             self.pass_count += 1
 
             if self.pass_count >= 2:
+                # 連続でパス
                 self.done = True # 終了
-                self.reword = self.count_reword()
+                self.reward = self.count_reward()
             else:
+                # 初回のパス
+                self.reward = -1
                 self.change_turn()
 
             return self.state, self.reward, self.done
@@ -291,18 +295,22 @@ class GoGame(GoGame):
                     print('●', end=' ')
             print()
 
-# @title count_reword
+# @title count_reward
 class GoGame(GoGame):
-    def count_reword(self):
+    def count_reward(self):
         # count Winner
         black_territory = self.count_territory(self.CFG.black)
         white_territory = self.count_territory(self.CFG.white)
-        if self.simulation:
+
+        if 0: # not self.simulation:
             print('black', black_territory, '  white', white_territory)
             print(self.captured_stones_dict)
 
-        black = black_territory + self.captured_stones_dict[self.black]
-        white = white_territory + self.captured_stones_dict[self.white]
+        black_captured_stones = env.captured_stones_dict[CFG.black]
+        white_captured_stones = env.captured_stones_dict[CFG.white]
+
+        black = black_territory + black_captured_stones
+        white = white_territory + white_captured_stones
 
         if white < black:
             if self.player == self.CFG.black:
@@ -314,6 +322,8 @@ class GoGame(GoGame):
                 return 1
             else:
                 return -1
+        else:
+            return 0
 
 # @title is_valid_move
 class GoGame(GoGame):
