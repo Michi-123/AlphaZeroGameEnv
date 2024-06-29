@@ -10,16 +10,17 @@ with open(os.path.join(current_path, 'README.md'), encoding='utf-8') as f:
 
 
 setup(
-    name='AlphaZero_GameEnv', 
+    name='alphazero_game_env', 
     packages=find_packages(exclude=('*.pyc',)),
-    version='1.0.0.0',
+    version='1.0.2.0',
     license='MIT', 
     install_requires=[],
     author='M.Uchiyama',
-    description='AlphaZero_GameEnv', 
+    description='alphazero_game_env', 
     long_description=long_description,
     long_description_content_type='text/markdown', 
     keywords='gogame tic-tac-toe othello gomoku', 
+    url='https://github.com/Michi-123/GameEnv',
 
     classifiers=[
         'License :: OSI Approved :: MIT License',
