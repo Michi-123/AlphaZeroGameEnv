@@ -13,7 +13,6 @@ class AlphaZeroNetwork(AlphaZeroNetwork):
     # Override
     def __init__(self, CFG):
         super().__init__(CFG)
-        print('override __init__')
 
         self.CFG = CFG
         in_channels = self.CFG.history_size * 2 + 1
@@ -76,7 +75,6 @@ class AlphaZeroNetwork(AlphaZeroNetwork):
 
     # Override
     def policy_head(self, x):
-        print('override policy_head')
         """
         Architecture
         The policy head applies an additional rectified, batch-normalized convolutional layer, followed by a final convolution of 73 filters for chess or 139 filters for shogi, or a linear layer of size 362 for Go, representing the logits of the respective policies described above.
