@@ -8,7 +8,7 @@ AlphaZeroのためのゲーム環境です。セルフプレイでも使用し�
 囲碁AIのAlphaGoから、人の知識なしでゼロから学習に成功した強化学習モデル のゲームＡＩ「AlphaZero」 を、初心者・中級者向けに、イラストなどで解説していきます。AlphaZeroは、将棋ＡＩとしても成果を出しています。<br>
 
 <pre>
-pip install AlphaZero_GameEnv
+pip install AlphaZero-GameEnv
 </pre>
 <pre>
 import AlphaZero_GameEnv
