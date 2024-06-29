@@ -3,7 +3,7 @@
 
 import copy
 """ Import libraries Original """
-from AlphaZeroCode import Node
+from AlphaZeroCode import Node, MCTS
 
 # @title MCTS
 class MCTS(MCTS):
