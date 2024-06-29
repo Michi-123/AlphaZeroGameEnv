@@ -52,7 +52,7 @@ class MCTS(MCTS):
             node.child_nodes.append(child_node)
 
         # Passのノードを追加
-        action = self.CFG.pass_
+        action = self.CFG.pass_action
         states = copy.deepcopy(node.states)
         actions = self.util.get_next_actions(node.actions, action)
         child_node = Node(self.CFG)
