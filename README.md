@@ -11,5 +11,5 @@ AlphaZeroのためのゲーム環境です。セルフプレイでも使用し�
 pip install AlphaZero-GameEnv
 </pre>
 <pre>
-import AlphaZero_GameEnv
+import alphazero_game_env
 </pre>
