@@ -1,4 +1,4 @@
-# AlphaZeroCode
+# AlphaZero ゲーム環境
 
 ![image](https://github.com/Michi-123/AlphaZeroCode/assets/26673104/3b773129-74d2-4e11-bcab-d39f17c10980)
 https://www.udemy.com/course/alphazero/<br>
