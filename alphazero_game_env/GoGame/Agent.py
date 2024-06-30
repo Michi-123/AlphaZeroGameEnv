@@ -14,34 +14,29 @@ class Agent(Agent):
         is_pass = False
 
         while True:
-            x = input('横,縦')
+            x = input('横,縦 ')
             
-            if x == 'pass' or x == 'p':
+            # Pass 判定
+            if x == 'pass' or x == 'p' or x == '-1':
                 is_pass = True
                 break
 
-            x = x.replace(',',' ')
-
             try:
+                x = x.replace(',',' ')
                 x1, x2 = x.split()
                 x1, x2 = int(x1), int(x2)
-                
-                if x1 == -1:
-                    is_pass = True
-                    break
                 
                 if state[x2][x1] == 0:
                     break
                 else:
-                    break
-                show_board(state)
+                    continue
             except:
-                pass
+                continue
 
         if is_pass:
             action = self.CFG.pass_action
         else:
-            # 縦横入れ替え
+            # 縦横入れ替えて行動のインデックスを計算
             action = x2 * self.env.width + x1
 
         next_node = self.mcts.human_play(node, action, env) #fix
