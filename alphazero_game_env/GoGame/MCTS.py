@@ -33,33 +33,3 @@ class MCTS(MCTS):
         next_node.Q = 0
 
         return next_node
-
-    # Override
-    def add_child_nodes(self, node, p):
-        """ 合法手の取得 """
-        legal_actions = self.env.get_legal_actions()
-
-        for action in legal_actions:
-            states = self.util.get_next_states(node.states, action, node.player, self.env)
-            actions = self.util.get_next_actions(node.actions, action)
-
-            child_node = Node(self.CFG)
-            child_node.p = p[action]
-            child_node.action = action
-            child_node.actions = actions
-            child_node.states = states
-            child_node.player = -node.player
-            node.child_nodes.append(child_node)
-
-        # Passのノードを追加
-        action = self.CFG.pass_action
-        states = copy.deepcopy(node.states)
-        actions = self.util.get_next_actions(node.actions, action)
-        child_node = Node(self.CFG)
-
-        child_node.p = p[action]
-        child_node.action = action
-        child_node.actions = actions
-        child_node.states = states
-        child_node.player = -node.player
-        node.child_nodes.append(child_node)

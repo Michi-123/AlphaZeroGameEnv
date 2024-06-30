@@ -18,9 +18,6 @@ class GoGame:
         # Action
         self.action_size = CFG.board_width * CFG.board_width + 1 # including pass
         self.pass_action = CFG.board_width * CFG.board_width
-        # Buffer
-        #self.buffered_x = None
-        #self.buffered_y = None
         # Agent
         self.player = None
         self.captured_stones_dict = None
@@ -37,8 +34,6 @@ class GoGame:
 class GoGame(GoGame):
     def reset(self):
         self.state = [[0 for col in range(self.width)] for row in range(self.width)]
-        #self.buffered_x = None
-        #self.buffered_y = None
         self.captured_stones_dict = {self.black: 0, self.white: 0}
         self.pass_count = 0
         self.kou_history = [[-9 for col in range(self.width)]] * 2 # Kou
@@ -113,7 +108,8 @@ class GoGame(GoGame):
 class GoGame(GoGame):
     def get_legal_actions(self):
         state = np.array(self.state).reshape(-1)
-        return np.where(state == 0)[0]
+        legal_actions = np.where(state == 0)[0]
+        return legal_actions 
 
 # @title search
 class GoGame(GoGame):
