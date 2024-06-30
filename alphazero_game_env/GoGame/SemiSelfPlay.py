@@ -30,7 +30,7 @@ class SemiSelfPlay(SelfPlay):
         self.env.show_board()
 
         if done:
-            print('Done')
+            print('Done', 'player',self.env.player, ' reward', reward)
             # 引き分けなら  0
             # 勝った時は +1
             v = -reward
