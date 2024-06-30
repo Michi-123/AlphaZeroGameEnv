@@ -30,9 +30,12 @@ class SemiSelfPlay(SelfPlay):
         self.env.show_board()
 
         if done:
-            print('Done', 'player',self.env.player, ' reward', reward)
-            # 引き分けなら  0
+            stone =  "●" if self.env.player == 1 else "○"
+            win_lose = 'win' if reward == 1 else 'lose' if reward == -1 else 'draw'
+            print('Done', stone, win_lose)
+            # 引き分けは  0
             # 勝った時は +1
+            # 負けた時は -1
             v = -reward
 
         else:
