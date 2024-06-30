@@ -11,7 +11,6 @@ class GoGame:
         self.CFG = CFG
         self.width = CFG.board_width
         self.state = None
-        #self.previous_state = None
         self.kou_history = None # Kou
         self.black = -1
         self.white = 1
@@ -20,8 +19,8 @@ class GoGame:
         self.action_size = CFG.board_width * CFG.board_width + 1 # including pass
         self.pass_action = CFG.board_width * CFG.board_width
         # Buffer
-        self.buffered_x = None
-        self.buffered_y = None
+        #self.buffered_x = None
+        #self.buffered_y = None
         # Agent
         self.player = None
         self.captured_stones_dict = None
@@ -38,13 +37,11 @@ class GoGame:
 class GoGame(GoGame):
     def reset(self):
         self.state = [[0 for col in range(self.width)] for row in range(self.width)]
-        #self.previous_state = self.state.copy()
-        self.buffered_x = None
-        self.buffered_y = None
+        #self.buffered_x = None
+        #self.buffered_y = None
         self.captured_stones_dict = {self.black: 0, self.white: 0}
         self.pass_count = 0
         self.kou_history = [[-9 for col in range(self.width)]] * 2 # Kou
-
         self.player = self.black
         self.reward = 0
         self.done = False
@@ -53,12 +50,12 @@ class GoGame(GoGame):
 
 # @title step
 class GoGame(GoGame):
-    def step(self, a, is_pass=False):
+    def step(self, action, is_pass=False):
 
         self.done = False
         self.reward = 0
 
-        if is_pass or a == self.pass_action:
+        if is_pass or action == self.pass_action:
             self.pass_count += 1
 
             if self.pass_count >= 2:
@@ -72,31 +69,31 @@ class GoGame(GoGame):
 
             return self.state, self.reward, self.done
 
-        x, y = (a // self.width), (a % self.width)
+        x, y = (action // self.width), (action % self.width)
         try:
-            if not self.is_valid_move(x, y):
+            if self.state[x][y] != self.empty:
                 self.reward = -1
-                self.done = True # 終了
-                return self.state, self.reward, self.done
-
-            if self.is_suicide(x, y):
-                self.reward = -1
-                self.done = True # 終了
+                self.done = True
                 return self.state, self.reward, self.done
 
             captured_stones, is_valid_move = self.search(x, y)
 
             if not is_valid_move:
-                self.reward = -1
-                self.done = True # 終了
-                return self.state, self.reward, self.done
+                if not self.is_valid_move(x, y) or self.is_suicide(x, y): # Fix (add)
+                    self.reward = -1
+                    self.done = True # 終了
+                    return self.state, self.reward, self.done
 
         except Exception as e:
-            print('action', a)
-            print('x,y', x), y
-            raise
+            print('action', action)
+            print('x,y', x, y)
+            print(e)
 
-        #self.previous_state = self.state.copy()
+            self.reward = -1
+            self.done = True
+            return self.state, self.reward, self.done
+            #raise
+
         if captured_stones > 0:
             self.reward = 1
 
@@ -149,19 +146,18 @@ class GoGame(GoGame):
                         board[gx][gy] = 0
                     captured_stones += len(group)
 
-        # 自分の石のグループを取得して自由度を確認
+        # 自分の石のグループを取得して自由度（呼吸点の数）を確認
         _, liberties = self.get_group(board, x, y)
 
-        # 自殺点の判定
-        # if (liberties == 0 and captured_stones == 0) or self.is_kou(board):
-        if (liberties == 0 ) or self.is_kou(board):
+        # 自由度（呼吸点の数）とコウの判定
+        if (liberties == 0) or self.is_kou(board): # Add
 
-            # 自殺点の場合、石を元に戻す
+            # 自殺点の場合、取った石（アゲハマ）を元に戻す
             is_valid_move = False
             captured_stones = 0
         else:
             is_valid_move = True
-            self.state = copy.deepcopy(board)  # 更新
+            self.state = copy.deepcopy(board)  # 盤面の更新
 
         return captured_stones, is_valid_move
 
@@ -169,11 +165,10 @@ class GoGame(GoGame):
 class GoGame(GoGame):
     def is_kou(self, board):
         if self.kou_history[0] == board:
-            print('Kou------')
-            print('state',board)
-            print('history 0',self.kou_history[0])
-            print('history 1',self.kou_history[1])
-            print('Kou------')
+            # print('Kou')
+            # print('state    ',board)
+            # print('history 0',self.kou_history[0])
+            # print('history 1',self.kou_history[1])
             return True
         return False
 
@@ -225,13 +220,6 @@ class GoGame(GoGame):
 # @title count_territory
 class GoGame(GoGame):
     def count_territory(self, stone):
-        """
-        Count the territory controlled by the specified stone (black or white) on a Go board.
-
-        :param board: 2D list representing the Go board (0: empty, 1: black, 2: white)
-        :param stone: Integer representing the stone type to count the territory for (1: black, 2: white)
-        :return: Integer count of the territory controlled by the specified stone
-        """
         def dfs(board, x, y, visited):
 
             if x < 0 or y < 0 or x >= len(board) or y >= len(board[0]) or visited[x][y]:
@@ -270,7 +258,7 @@ class GoGame(GoGame):
 class GoGame(GoGame):
     def show_board(self):
 
-        # アルファベット
+        # アルファベット表記
         print("    ", end="")
         for i in range(ord('A'), ord('A') + self.width):
             print(f"{chr(i)}", end="  ")
@@ -362,7 +350,8 @@ class GoGame(GoGame):
                     return True
         return False
 
-# @title has_good_moves
+# @title has_good_moves 
+"""
 class GoGame(GoGame):
     def has_good_moves(self):
         for x in range(self.width):
@@ -371,3 +360,4 @@ class GoGame(GoGame):
                     if self.is_valid_move(x, y) and not self.is_suicide(x, y):
                         return True
         return False
+"""
