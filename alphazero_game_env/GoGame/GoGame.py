@@ -114,46 +114,32 @@ class GoGame(GoGame):
 # @title search
 class GoGame(GoGame):
     def search(self, x, y):
-        """
-        指定された座標 (x, y) に石を置き、相手の石が取れるかどうかを確認し、
-        取れる場合はその石を取り除く。
-        :return: 取れた石の数、自殺点ではないかのブール値
-        """
-        # 取れた石の数
         captured_stones = 0
-
         board = copy.deepcopy(self.state)
-
-        # 一時的に石を置く
         board[x][y] = self.player
-
-        # 相手の石の種類
         opponent_stone = self.black if self.player == self.white else self.white
 
-        # 隣接する相手の石のグループをチェック
-        size = self.width
+        # まず相手の石を取れるかチェック
         for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
             nx, ny = x + dx, y + dy
-            if 0 <= nx < size and 0 <= ny < size and board[nx][ny] == opponent_stone:
+            if 0 <= nx < self.width and 0 <= ny < self.width and board[nx][ny] == opponent_stone:
                 group, liberties = self.get_group(board, nx, ny)
                 if liberties == 0:
-                    # 相手の石のグループを取り除く
                     for gx, gy in group:
                         board[gx][gy] = 0
                     captured_stones += len(group)
 
-        # 自分の石のグループを取得して自由度（呼吸点の数）を確認
+        # 自分の石のグループを確認
         _, liberties = self.get_group(board, x, y)
 
-        # 自由度（呼吸点の数）とコウの判定
-        if (liberties == 0) or self.is_kou(board): # Add
-
-            # 自殺点の場合、取った石（アゲハマ）を元に戻す
+        # 相手の石を取れなかった場合のみ、自殺手のチェックを行う
+        if captured_stones == 0 and liberties == 0:
             is_valid_move = False
-            captured_stones = 0
+        elif self.is_kou(board):
+            is_valid_move = False
         else:
             is_valid_move = True
-            self.state = copy.deepcopy(board)  # 盤面の更新
+            self.state = copy.deepcopy(board)
 
         return captured_stones, is_valid_move
 
