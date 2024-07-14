@@ -30,8 +30,8 @@ class SemiSelfPlay(SelfPlay):
 
         if done:
             stone = "●" if self.env.player == 1 else "○"
-            win_lose = 'win' if reward == 1 else 'lose' if reward == -1 else 'draw'
-            print('Done', stone, win_lose)
+            result = 'Win' if reward == 1 else 'Lose' if reward == -1 else 'Draw'
+            print('Done', stone, result)
             # 引き分けは  0
             # 勝った時は +1
             # 負けた時は -1
